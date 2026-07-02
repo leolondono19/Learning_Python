@@ -1,0 +1,87 @@
+import os
+
+class BankAccount:
+    def __init__(self, owner: str, balance: int):
+        self.owner = owner
+        self.balance = balance
+
+    def show_balance(self):
+        print(f"\nActual Balance: ${self.balance:.2f}")
+
+
+class ATM:
+    def __init__(self) -> None:
+        pass
+
+    def deposit(self, bank_account: BankAccount):
+        try:
+            amount: int = int(input("Insert the amount you will deposit:\n"))
+            if amount <= 0:
+                print("The amount will be more than 0")
+                return
+            bank_account.balance += amount
+            print(f"Succesful deposit: New Balance: ${bank_account.balance:.2f}")
+
+        except ValueError:
+            print("Insert a value amount")
+    
+    def withdraw(self, bank_account: BankAccount):
+        try:
+            amount:int = int(input("Insert the amount you will withdraw:\n"))
+
+            if amount <= 0:
+                print("The amount will be more than 0")
+                return
+
+            if amount > bank_account.balance:
+                print("insufficient funds")
+                return
+
+            bank_account.balance -= amount
+            print(f"Succesful withdraw. New balance: ${bank_account.balance:.2f}")
+
+        except ValueError:
+            print("Insert a value amount")
+
+
+def show_menu() -> None: 
+    print("\n===== WELCOME TO MY ATM =====")
+    print("1. Balance")
+    print("2. Deposit Money")
+    print("3. Withdraw money")
+    print("4. Exit")
+
+def clear_display() -> None:
+    os.system("cls")
+
+def pause_display() -> None:
+    os.system("pause")
+
+atm: ATM = ATM()
+account: BankAccount = BankAccount("Leonee", 0)
+
+
+while True:
+    clear_display()
+    show_menu()
+
+    option = input("Please select an option: ")
+
+    if option == "1":
+        clear_display()
+        account.show_balance()
+        pause_display()
+
+    elif option == "2":
+        clear_display()
+        atm.deposit(account)
+        pause_display()
+
+    elif option == "3":
+        clear_display()
+        atm.withdraw(account)
+        pause_display()
+
+    elif option == "4":
+        print("Thanks for use my ATM")
+        break
