@@ -4,36 +4,13 @@ import os
 import json
 from typing import Any
 
-class TypeBankAccount(Enum):
-    SAVING_ACCOUNT = "Saving Account"
-    CHECKING_ACCOUNT = "Checking Account"
 
-class TypeBankCurrency(Enum):
-    DOLARS = "USD"
-    BOLIVIANOS = "Bs"
-    EUROS = "EUR"
 
-class Role(Enum):
-    ADMIN = "Administrator"
-    CUSTOMER = "Customer"
 
-class User:
-    def __init__(
-            self,
-            username: str,
-            name: str,
-            surname: str,
-            age: int,
-            phone: int,
-            mail: str
-            ) -> None:
-        self.username = username
-        self.name = name
-        self.surname = surname
-        self.age = age
-        self.phone = phone
-        self.mail = mail
-        self.role = Role.CUSTOMER
+
+
+
+
 
 class BankAccount:
     used_account_numbers: set[str] = set()
@@ -118,7 +95,7 @@ class BankManager:
 
     accounts_list: list[BankAccount] = []
     users_list: list[User] = []
-    user_accounts: list[BankAccount] = []
+    #user_accounts: list[BankAccount] = []
 
     def log_in(self, username: str) -> BankAccount:
         for account in self.accounts_list:
@@ -237,18 +214,25 @@ class BankManager:
 
                 self.accounts_list.append(account)
     
-    def load_user_accounts(self):
+    #def load_user_accounts(self):
 
 
 def show_accounts(bank_manager: BankManager) -> None:
-    for accounts in bank_manager.accounts_list:
+    for account in bank_manager.accounts_list:
         print(
-                f"{accounts.account_number} | "
-                f"{accounts.owner} | "
-                f"{accounts.type_account.value} | "
-                f"{accounts.balance} | "
-                f"{accounts.currency.value}"
+                f"{account.account_number} | "
+                f"{account.owner} | "
+                f"{account.type_account.value} | "
+                f"{account.balance} | "
+                f"{account.currency.value}"
             )
+
+def show_user_accounts(bank_manager: BankManager, username: str) -> None:
+    for account in bank_manager.accounts_list:
+        if username == account.owner.username:
+            print()
+            
+
 
 def show_Atm_menu() -> None:
     print("\n----Welcome to your ATM operations----") 
@@ -314,7 +298,7 @@ while True:
         clear_display()
         print("Your account was successfully created!!")
         pause_display()
-        bank_manager.create_account(, type_account, type_currency)
+        #bank_manager.create_account(, type_account, type_currency)
 
     if (option == "3"):
         clear_display()
@@ -323,7 +307,7 @@ while True:
             option: str = input("What do you want to do?: ")
             if option == "1":
                 amount: float = float(input("Please insert the amount you want to deposit:\n"))
-                AtmManager.deposit(amount)
+                #AtmManager.deposit(amount)
 
     if (option == "4"):
         pass
