@@ -1,3 +1,5 @@
+from enums.role import Role
+
 class User:
     def __init__(
             self,
