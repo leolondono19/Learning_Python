@@ -1,5 +1,5 @@
 from models.bank_account import BankAccount
-from models.user import User
+from models.user import BankCustomer
 
 class BankManager:
     def __init__(self, accounts_file: str, users_file: str) -> None:
@@ -9,17 +9,12 @@ class BankManager:
         self.load_users()
 
     accounts_list: list[BankAccount] = []
-    users_list: list[User] = []
+    users_list: list[BankCustomer] = []
     #user_accounts: list[BankAccount] = []
 
-    def log_in(self, username: str) -> BankAccount:
-        for account in self.accounts_list:
-            if username == account.owner.username:
-                return account
-
-        raise ValueError("Account not found.")
     
-    def log_in1(self, username: str) -> User:
+    
+    def log_in1(self, username: str) -> BankCustomer:
         for user in self.users_list:
             if username == user.username:
                 return user
@@ -27,7 +22,7 @@ class BankManager:
         raise ValueError("User not found.")
 
     def create_user(self, username: str, name: str, surname: str, age: int, phone: int, mail: str, is_admin: str) -> None:
-        user: User = User(username, name, surname, age, phone, mail)
+        user: BankCustomer = BankCustomer(username, name, surname, age, phone, mail)
         if is_admin == "y":
             admin_code: int = int(input("Enter the secret code:\n"))
             if admin_code == 1234:
@@ -66,7 +61,7 @@ class BankManager:
             data = json.load(account_file)
 
             for user_data in data["users"]:
-                user: User = User(
+                user: BankCustomer = BankCustomer(
                     user_data["username"],
                     user_data["name"],
                     user_data["surname"],
@@ -77,7 +72,7 @@ class BankManager:
 
                 self.users_list.append(user)
 
-    def create_account(self, owner: User, choose_type_account: str, choose_currency: str) -> None:
+    def create_account(self, owner: BankCustomer, choose_type_account: str, choose_currency: str) -> None:
 
         account: BankAccount = BankAccount(owner)
 

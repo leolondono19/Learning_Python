@@ -1,63 +1,56 @@
 import random
-from models.user import User
+from models.bank_customer import BankCustomer
 from enums.account_type import TypeBankAccount
 from enums.currency_type import TypeBankCurrency
+from exceptions import exceptions
 
 class BankAccount:
     used_account_numbers: set[str] = set()
 
     def __init__(
             self,
-            owner: User,
+            owner: BankCustomer,
+            type_account: TypeBankAccount,
+            type_currency: TypeBankCurrency
             ) -> None:
-        self.account_number = self._generate_account_number()
-        self.owner: User = owner
-        self.balance: float = 0
-        self.type_account: TypeBankAccount = TypeBankAccount.SAVING_ACCOUNT
-        self.currency: TypeBankCurrency = TypeBankCurrency.DOLARS
+        self.account_number = self.__generate_account_number()
+        self.owner: BankCustomer = owner
+        self.__balance: float = 0 #TODO: change the property to getter only
+        self.__type_account = type_account 
+        self.__type_currency = type_currency 
+    
+    @property
+    def balance(self) -> float:
+        return self.__balance
+
+    @property
+    def type_account(self) -> TypeBankAccount:
+        return self.__type_account
+    
+    @property
+    def type_currency(self) -> TypeBankCurrency:
+        return self.__type_currency
+         
     
     def __str__(self) -> str:
-        return f"{self.account_number} | {self.owner} | {self.type_account} | {self.balance} | {self.currency}"
+        return f"{self.account_number} | {self.owner} | {self.__type_account} | {self.__balance} | {self.__type_currency}"
     
     def deposit(self, amount: float):
-        try:
             if amount <= 0:
-                print("Invalid amount")
-                return
+                raise exceptions.InvalidAmountException(amount)
 
-            self.balance += amount
-
-            print(
-                f"Deposit successful.\n"
-                f"New balance: "
-                f"${self.balance:.2f}"
-            )
-
-        except ValueError:
-            print("Invalid amount")
+            self.__balance += amount
 
     def withdraw(self, amount: float):
-        try:
             if amount <= 0:
-                print("Invalid amount")
-                return
+                raise exceptions.InvalidAmountException(amount)
 
-            if amount > self.balance:
-                print("Insufficient funds")
-                return
+            if amount > self.__balance:
+                raise exceptions.InsufficientFundsException(self.__balance, amount)
 
-            self.balance -= amount
-
-            print(
-                f"Withdraw successful.\n"
-                f"New balance: "
-                f"${self.balance:.2f}"
-            )
-
-        except ValueError:
-            print("Invalid amount")
+            self.__balance -= amount
     
-    def _generate_account_number(self) -> str:
+    def __generate_account_number(self) -> str:
         while True:
             self.account_number: str = str(random.randint(100000000, 999999999))
 

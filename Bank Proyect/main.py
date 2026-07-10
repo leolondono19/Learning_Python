@@ -33,10 +33,7 @@ def show_accounts(bank_manager: BankManager) -> None:
                 f"{account.currency.value}"
             )
 
-def show_user_accounts(bank_manager: BankManager, username: str) -> None:
-    for account in bank_manager.accounts_list:
-        if username == account.owner.username:
-            print()
+
 
 def clear_display() -> None:
     os.system("cls")

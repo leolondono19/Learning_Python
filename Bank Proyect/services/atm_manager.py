@@ -5,7 +5,7 @@ class AtmManager:
         pass
 
     def log_in(self, username: str) -> BankAccount:
-        for account in self.accounts_list:
+        for account in BankAccount.accounts_list:
             if username == account.owner.username:
                 return account
 
