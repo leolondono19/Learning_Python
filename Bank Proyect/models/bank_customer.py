@@ -1,5 +1,8 @@
-from models.bank_account import BankAccount
+
 from models.user import User
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from models.bank_account import BankAccount
 
 class BankCustomer(User): #TODO: should inherit from user
     def __init__(
@@ -22,4 +25,4 @@ class BankCustomer(User): #TODO: should inherit from user
             mail  
         )
        
-        self.accounts = list[BankAccount] 
+        self.accounts = list["BankAccount"] 

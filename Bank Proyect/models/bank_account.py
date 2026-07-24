@@ -15,7 +15,7 @@ class BankAccount:
             ) -> None:
         self.account_number = self.__generate_account_number()
         self.owner: BankCustomer = owner
-        self.__balance: float = 0 #TODO: change the property to getter only
+        self.__balance: float = 0 
         self.__type_account = type_account 
         self.__type_currency = type_currency 
     
@@ -33,7 +33,7 @@ class BankAccount:
          
     
     def __str__(self) -> str:
-        return f"{self.account_number} | {self.owner} | {self.__type_account} | {self.__balance} | {self.__type_currency}"
+        return f"{self.account_number} | {self.owner.username} | {self.__type_account.value} | {self.__balance} | {self.__type_currency.value}"
     
     def deposit(self, amount: float):
             if amount <= 0:

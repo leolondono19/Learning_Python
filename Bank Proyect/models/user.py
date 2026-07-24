@@ -42,3 +42,7 @@ class User:
     @property
     def phone(self) -> int:
         return self.__phone
+    
+    @property
+    def mail(self) -> str:
+        return self.__mail

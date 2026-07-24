@@ -35,11 +35,7 @@ def show_accounts(bank_manager: BankManager) -> None:
 
 
 
-def clear_display() -> None:
-    os.system("cls")
 
-def pause_display() -> None:
-    os.system("pause")
 
 
 bank_manager: BankManager = BankManager("Bank_Accounts", "Users")
@@ -51,14 +47,7 @@ while True:
     if (option == "1"):
         clear_display()
         print("-----------WELCOME TO YOUR BANK-----------")
-        print("Complete your register:\n")
-        username: str = input("Please insert your username (This will use for your bank account)\n")
-        name: str = input("Please insert your name\n")
-        surname: str = input("Please insert your surname\n")
-        age: int = int(input("Please insert your age\n"))
-        phone: int = int(input("Please insert your phone\n"))
-        mail: str = input("Please insert your mail\n")
-        is_admin: str = input("Is this an admin account? (y/n)")
+        
 
         bank_manager.create_user(username, name, surname, age, phone, mail, is_admin)
 
