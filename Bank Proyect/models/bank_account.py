@@ -11,11 +11,19 @@ class BankAccount:
             self,
             owner: BankCustomer,
             type_account: TypeBankAccount,
-            type_currency: TypeBankCurrency
+            type_currency: TypeBankCurrency,
+            balance: float = 0,
+            account_number: str | None = None
             ) -> None:
-        self.account_number = self.__generate_account_number()
+        
+        if account_number is None:
+            self.account_number = self.__generate_account_number()
+        else:
+            self.account_number = account_number
+            BankAccount.used_account_numbers.add(account_number)
+
+        self.__balance = balance
         self.owner: BankCustomer = owner
-        self.__balance: float = 0 
         self.__type_account = type_account 
         self.__type_currency = type_currency 
     

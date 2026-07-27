@@ -10,4 +10,9 @@ class InsufficientFundsException(Exception):
         super().__init__(
             f"Insufficient founds. Balance: {balance} - Requested: {amount}"
         )
-        
+
+class ValueNotFoundException(Exception):
+    def __init__(self, username: str) -> None:
+        super().__init__(
+            f"Value {username} not found."
+        )

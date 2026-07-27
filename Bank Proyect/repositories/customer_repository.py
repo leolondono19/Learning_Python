@@ -1,16 +1,16 @@
 import os
 import json
 from typing import Any
+from pathlib import Path
 from models.bank_customer import BankCustomer
 from models.bank_account import BankAccount
 from repositories.accounts_repository import AccountRepository
 
 class CustomerRepository:
     def __init__(self) -> None:
-        self.file = "data/users.json"
-    
-    account_repository: AccountRepository = AccountRepository()
-    accounts: list[BankAccount] = account_repository.load_accounts()
+        BASE_DIR = Path(__file__).resolve().parent.parent
+        self.file = BASE_DIR / "data" / "customers.json"
+
 
     def save_customer(self, users: list[BankCustomer]):
         data: dict[str, Any] = { "users": [] }

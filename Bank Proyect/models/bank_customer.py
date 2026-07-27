@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from models.bank_account import BankAccount
 
-class BankCustomer(User): #TODO: should inherit from user
+class BankCustomer(User): 
     def __init__(
             self,
             username: str,
@@ -25,4 +25,7 @@ class BankCustomer(User): #TODO: should inherit from user
             mail  
         )
        
-        self.accounts = list["BankAccount"] 
+        self.accounts: list["BankAccount"] = []
+
+    def __str__(self) -> str:
+        return f"{self.username} | {self.first_name} | {self.last_name} | {self.age} | {self.phone} | {self.mail}"
