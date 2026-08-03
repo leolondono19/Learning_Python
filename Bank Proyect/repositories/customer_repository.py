@@ -3,19 +3,20 @@ import json
 from typing import Any
 from pathlib import Path
 from models.bank_customer import BankCustomer
-from models.bank_account import BankAccount
-from repositories.accounts_repository import AccountRepository
+from exceptions.exceptions import ValueNotFoundException
 
 class CustomerRepository:
     def __init__(self) -> None:
         BASE_DIR = Path(__file__).resolve().parent.parent
         self.file = BASE_DIR / "data" / "customers.json"
+        self.customers: list[BankCustomer] = []
+        self.load_customers()
 
 
-    def save_customer(self, users: list[BankCustomer]):
+    def save_customer(self):
         data: dict[str, Any] = { "users": [] }
 
-        for user in users:
+        for user in self.customers:
             data["users"].append(
                 {
                     "username": user.username,
@@ -32,8 +33,6 @@ class CustomerRepository:
             json.dump(data, account_file, indent=4)
 
     def load_customers(self) -> list[BankCustomer]:
-        customers: list[BankCustomer] = []
-
         if (not os.path.exists(self.file)):
             return []
 
@@ -50,14 +49,13 @@ class CustomerRepository:
                     customer_data["phone"],
                     customer_data["mail"]
                 )
-                customers.append(customer)
-                """
-                for customer in customers:
-                    for account in self.accounts:
-                        if customer.username == account.owner.username:
-                            customer.accounts.append()
-                """
+                #self.customers.clear()
+                self.customers.append(customer)
                 
-                #TODO: read accounts from the repository. Add the accounts for each user. 
-        #foreach customer then customer.accouts.add()
-        return customers
+        return self.customers
+
+    def find_customer_by_username(self, username: str) -> BankCustomer:
+            for customer in self.customers:
+                if customer.username == username:
+                    return customer
+            raise ValueNotFoundException(username)

@@ -5,7 +5,7 @@ from enums.currency_type import TypeBankCurrency
 from exceptions import exceptions
 
 class BankAccount:
-    used_account_numbers: set[str] = set()
+    used_account_ids: set[str] = set()
 
     def __init__(
             self,
@@ -13,14 +13,14 @@ class BankAccount:
             type_account: TypeBankAccount,
             type_currency: TypeBankCurrency,
             balance: float = 0,
-            account_number: str | None = None
+            account_id: str | None = None
             ) -> None:
         
-        if account_number is None:
-            self.account_number = self.__generate_account_number()
+        if account_id is None:
+            self.account_id = self.__generate_account_id()
         else:
-            self.account_number = account_number
-            BankAccount.used_account_numbers.add(account_number)
+            self.account_id = account_id
+            BankAccount.used_account_ids.add(account_id)
 
         self.__balance = balance
         self.owner: BankCustomer = owner
@@ -41,7 +41,7 @@ class BankAccount:
          
     
     def __str__(self) -> str:
-        return f"{self.account_number} | {self.owner.username} | {self.__type_account.value} | {self.__balance} | {self.__type_currency.value}"
+        return f"{self.account_id} | {self.owner.username} | {self.__type_account.value} | {self.__balance} | {self.__type_currency.value}"
     
     def deposit(self, amount: float):
             if amount <= 0:
@@ -58,10 +58,10 @@ class BankAccount:
 
             self.__balance -= amount
     
-    def __generate_account_number(self) -> str:
+    def __generate_account_id(self) -> str:
         while True:
-            self.account_number: str = str(random.randint(100000000, 999999999))
+            self.account_id: str = str(random.randint(100000000, 999999999))
 
-            if (self.account_number not in self.used_account_numbers):
-                self.used_account_numbers.add(self.account_number)
-                return self.account_number
+            if (self.account_id not in self.used_account_ids):
+                self.used_account_ids.add(self.account_id)
+                return self.account_id

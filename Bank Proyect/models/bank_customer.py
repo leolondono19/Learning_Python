@@ -24,7 +24,6 @@ class BankCustomer(User):
             phone,
             mail  
         )
-       
         self.accounts: list["BankAccount"] = []
 
     def __str__(self) -> str:

@@ -1,4 +1,5 @@
 from models.user import User
+from models.bank_customer import BankCustomer
 from services.display_service import clear_display
 from services.display_service import pause_display
 
@@ -7,7 +8,7 @@ class AuthenticationService:
     def __init__(self) -> None:
         pass
 
-    def create_user(self, users: list[User]) -> None:
+    def create_customer(self) -> BankCustomer:
         print("Complete your register:\n")
         username: str = input("Please insert your username (This will use for your bank account)\n")
         first_name: str = input("Please insert your name\n")
@@ -18,7 +19,7 @@ class AuthenticationService:
         clear_display()
         password: str = input("Please create a strong password\n")
 
-        user: User = User(username, password, first_name, last_name, age, phone, mail)
-        
-        
-        self.users_list.append(user)
+        customer: BankCustomer = BankCustomer(username, password, first_name, last_name, age, phone, mail)
+        print("Customer succesfully created!!")
+        return customer
+    

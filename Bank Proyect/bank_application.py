@@ -1,16 +1,14 @@
 from repositories.accounts_repository import AccountRepository
 from repositories.banks_repository import BankRepository
 from repositories.customer_repository import CustomerRepository
-from models.bank import Bank
-from models.bank_account import BankAccount
+from services.authentication_service import AuthenticationService
 from models.bank_customer import BankCustomer
-from enums.account_type import TypeBankAccount
-from enums.currency_type import TypeBankCurrency
 
-
-account_repository: AccountRepository = AccountRepository()
-bank_repository: BankRepository = BankRepository()
+authentication_service: AuthenticationService = AuthenticationService()
 customer_repository: CustomerRepository = CustomerRepository()
+account_repository: AccountRepository = AccountRepository(customer_repository)
+bank_repository: BankRepository = BankRepository()
+
 
 #customer_list: list[BankCustomer] = customer_repository.load_customers()
 
@@ -25,16 +23,28 @@ customer_repository: CustomerRepository = CustomerRepository()
 #accounts.append(account1)
 #account_repository.save_account(accounts)
 
-customers: list[BankCustomer] = customer_repository.load_customers()
-accounts: list[BankAccount] = account_repository.load_accounts(customers)
+"""
+customer3: BankCustomer = BankCustomer("garyflorero", "00000", "gary", "florero", 50, 123456, "garyflorero@gmail.com")
+account2: BankAccount = BankAccount(customer3, TypeBankAccount.SAVING_ACCOUNT, TypeBankCurrency.BOLIVIANOS)
 
-for customer in customers:
+customer_repository.customers.append(customer3)
+customer_repository.save_customer()
+
+account_repository.accounts.append(account2)
+account_repository.save_account()
+"""
+"""
+
+"""
+
+#customer: BankCustomer = authentication_service.create_customer()
+#customer_repository.customers.append(customer)
+#customer_repository.save_customer()
+
+
+for account in account_repository.accounts:
+    print(account)
+
+for customer in customer_repository.customers:
     print(customer)
 
-for account in accounts:
-    print(account)
-"""
-accounts = account_repository.load_accounts()
-for account in accounts:
-    print(account)
-"""

@@ -1,10 +1,17 @@
 {
     "accounts": [
         {
-            "account number": "601129089",
-            "owner": "leolondono",
+            "account number": "515454608",
+            "owner": "jimmyflorero",
             "type account": "Saving Account",
-            "type currency": "USD",
+            "type currency": "Bs",
+            "balance": 0
+        },
+        {
+            "account number": "513958496",
+            "owner": "garyflorero",
+            "type account": "Saving Account",
+            "type currency": "Bs",
             "balance": 0
         }
     ]

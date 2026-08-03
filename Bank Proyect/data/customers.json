@@ -17,6 +17,24 @@
             "phone": 63136523,
             "mail": "simoneelondono@gmail.com",
             "password": "123456"
+        },
+        {
+            "username": "jimmyflorero",
+            "first_name": "jimmy",
+            "last_name": "florero",
+            "age": 50,
+            "phone": 123456,
+            "mail": "jimmyflorero@gmail.com",
+            "password": "00000"
+        },
+        {
+            "username": "garyflorero",
+            "first_name": "gary",
+            "last_name": "florero",
+            "age": 50,
+            "phone": 123456,
+            "mail": "garyflorero@gmail.com",
+            "password": "00000"
         }
     ]
 }

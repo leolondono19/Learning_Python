@@ -6,21 +6,27 @@ from enums.account_type import TypeBankAccount
 from enums.currency_type import TypeBankCurrency
 from models.bank_account import BankAccount
 from models.bank_customer import BankCustomer
-from exceptions.exceptions import ValueNotFoundException
+from repositories.customer_repository import CustomerRepository
 
 class AccountRepository:
     
-    def __init__(self) -> None:
+    def __init__(self, customer_repository: CustomerRepository) -> None:
         BASE_DIR = Path(__file__).resolve().parent.parent
         self.file = BASE_DIR / "data" / "accounts.json"
+        self.accounts: list[BankAccount] = []
+        self.customer_repository: CustomerRepository = customer_repository
+        self.customers: list[BankCustomer] = customer_repository.customers
+        self.load_accounts()
+        
+
     
-    def save_account(self, accounts: list[BankAccount]):
+    def save_account(self):
         data: dict[str, Any] = { "accounts": [] }
 
-        for account in accounts:
+        for account in self.accounts:
             data["accounts"].append(
                 {
-                    "account number": account.account_number,
+                    "account id": account.account_id,
                     "owner": account.owner.username,
                     "type account": account.type_account.value,
                     "type currency": account.type_currency.value,
@@ -31,8 +37,7 @@ class AccountRepository:
         with open(self.file, "w") as account_file:
             json.dump(data, account_file, indent=4)
 
-    def load_accounts(self, customers: list[BankCustomer]) -> list[BankAccount]:
-        accounts: list[BankAccount] = []
+    def load_accounts(self) -> list[BankAccount]:
         if (not os.path.exists(self.file)):
             return []
 
@@ -42,21 +47,16 @@ class AccountRepository:
             for account_data in data["accounts"]:
                 owner_username: str = account_data["owner"]
 
-                owner: BankCustomer = self.find_customer_by_username(customers, owner_username)
+                owner: BankCustomer = self.customer_repository.find_customer_by_username(owner_username)
                 account: BankAccount = BankAccount(
                     owner,
                     TypeBankAccount(account_data["type account"]),
                     TypeBankCurrency(account_data["type currency"]),
                     account_data["balance"],
-                    account_data["account number"]
+                    account_data["account id"]
                 )
-                accounts.append(account)
+                #self.accounts.clear()
+                self.accounts.append(account)
 
                 owner.accounts.append(account)
-        return accounts
-
-    def find_customer_by_username(self, customers: list[BankCustomer], username: str) -> BankCustomer:
-        for customer in customers:
-            if customer.username == username:
-                return customer
-        raise ValueNotFoundException(username)
+        return self.accounts
