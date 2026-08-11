@@ -1,33 +1,7 @@
 {
-    "users": [
+    "customers": [
         {
-            "username": "leolondono",
-            "first_name": "leonee",
-            "last_name": "londono",
-            "age": 22,
-            "phone": 67314221,
-            "mail": "leoneelondono@gmail.com",
-            "password": "123"
-        },
-        {
-            "username": "simolondono",
-            "first_name": "simo0nee",
-            "last_name": "londono",
-            "age": 19,
-            "phone": 63136523,
-            "mail": "simoneelondono@gmail.com",
-            "password": "123456"
-        },
-        {
-            "username": "jimmyflorero",
-            "first_name": "jimmy",
-            "last_name": "florero",
-            "age": 50,
-            "phone": 123456,
-            "mail": "jimmyflorero@gmail.com",
-            "password": "00000"
-        },
-        {
+            "customer id": "1612",
             "username": "garyflorero",
             "first_name": "gary",
             "last_name": "florero",

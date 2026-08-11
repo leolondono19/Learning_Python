@@ -1,0 +1,12 @@
+{
+    "banks": [
+        {
+            "name": "Banco Mercantil Santa Cruz",
+            "bank code": "BMSC"
+        },
+        {
+            "name": "Banco Nacional de Bolivia",
+            "bank code": "BNB"
+        }
+    ]
+}

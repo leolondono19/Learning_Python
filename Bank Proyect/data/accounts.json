@@ -1,17 +1,10 @@
 {
     "accounts": [
         {
-            "account number": "515454608",
-            "owner": "jimmyflorero",
-            "type account": "Saving Account",
-            "type currency": "Bs",
-            "balance": 0
-        },
-        {
-            "account number": "513958496",
+            "account id": "BNB-ACC-1128",
             "owner": "garyflorero",
             "type account": "Saving Account",
-            "type currency": "Bs",
+            "type currency": "USD",
             "balance": 0
         }
     ]

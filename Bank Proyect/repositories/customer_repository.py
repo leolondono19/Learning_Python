@@ -14,18 +14,19 @@ class CustomerRepository:
 
 
     def save_customer(self):
-        data: dict[str, Any] = { "users": [] }
+        data: dict[str, Any] = { "customers": [] }
 
-        for user in self.customers:
-            data["users"].append(
+        for customer in self.customers:
+            data["customers"].append(
                 {
-                    "username": user.username,
-                    "first_name": user.first_name,
-                    "last_name": user.last_name,
-                    "age": user.age,
-                    "phone": user.phone,
-                    "mail": user.mail,
-                    "password": user.password,
+                    "customer id": customer.customer_id,
+                    "username": customer.username,
+                    "first_name": customer.first_name,
+                    "last_name": customer.last_name,
+                    "age": customer.age,
+                    "phone": customer.phone,
+                    "mail": customer.mail,
+                    "password": customer.password,
                 }
             )
 
@@ -39,7 +40,7 @@ class CustomerRepository:
         with open(self.file, "r") as account_file:
             data = json.load(account_file)
 
-            for customer_data in data["users"]:
+            for customer_data in data["customers"]:
                 customer: BankCustomer = BankCustomer(
                     customer_data["username"],
                     customer_data["password"],
@@ -47,9 +48,9 @@ class CustomerRepository:
                     customer_data["last_name"],
                     customer_data["age"],
                     customer_data["phone"],
-                    customer_data["mail"]
+                    customer_data["mail"],
+                    customer_data["customer id"]
                 )
-                #self.customers.clear()
                 self.customers.append(customer)
                 
         return self.customers

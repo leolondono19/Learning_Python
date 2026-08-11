@@ -1,19 +1,25 @@
 import os
 import json
 from typing import Any
+from pathlib import Path
 from models.bank import Bank
+from exceptions.exceptions import ValueNotFoundException
 
 class BankRepository:
     def __init__(self) -> None:
-        self.file = "data/banks.json"
+        BASE_DIR = Path(__file__).resolve().parent.parent
+        self.file = BASE_DIR / "data" / "banks.json"
+        self.banks: list[Bank] = []
+        self.load_banks()
     
-    def save_account(self, banks: list[Bank]):
-        data: dict[str, Any] = { "accounts": [] }
+    def save_bank(self):
+        data: dict[str, Any] = { "banks": [] }
 
-        for bank in banks:
-            data["accounts"].append(
+        for bank in self.banks:
+            data["banks"].append(
                 {
-                    "name": bank.name
+                    "name": bank.name,
+                    "bank code": bank.bank_code
                 }
             )
 
@@ -21,7 +27,6 @@ class BankRepository:
             json.dump(data, account_file, indent=4)
 
     def load_banks(self) -> list[Bank]:
-        banks: list[Bank] = []
         if (not os.path.exists(self.file)):
             return []
 
@@ -31,8 +36,14 @@ class BankRepository:
             for account_data in data["accounts"]:
                 account: Bank = Bank(
                     account_data["name"],
+                    account_data["bank code"]
                 )
-                banks.append(account)
+                self.banks.append(account)
 
-                #TODO: Read user accounts. Add users to each bank. 
-        return banks
+        return self.banks
+
+    def find_bank_by_code(self, bank_code: str) -> Bank:
+        for bank in self.banks:
+            if bank.bank_code == bank_code:
+                return bank
+        raise ValueNotFoundException(bank_code)

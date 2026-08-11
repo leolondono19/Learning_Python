@@ -12,9 +12,12 @@ class BankAccount:
             owner: BankCustomer,
             type_account: TypeBankAccount,
             type_currency: TypeBankCurrency,
+            bank_code: str = "",
             balance: float = 0,
             account_id: str | None = None
             ) -> None:
+
+        self.__bank_code = bank_code
         
         if account_id is None:
             self.account_id = self.__generate_account_id()
@@ -22,6 +25,7 @@ class BankAccount:
             self.account_id = account_id
             BankAccount.used_account_ids.add(account_id)
 
+        
         self.__balance = balance
         self.owner: BankCustomer = owner
         self.__type_account = type_account 
@@ -38,6 +42,10 @@ class BankAccount:
     @property
     def type_currency(self) -> TypeBankCurrency:
         return self.__type_currency
+
+    @property
+    def bank_code(self) -> str:
+         return self.__bank_code
          
     
     def __str__(self) -> str:
@@ -60,7 +68,7 @@ class BankAccount:
     
     def __generate_account_id(self) -> str:
         while True:
-            self.account_id: str = str(random.randint(100000000, 999999999))
+            self.account_id: str = f"{self.bank_code}-ACC-{str(random.randint(1000, 1999))}"
 
             if (self.account_id not in self.used_account_ids):
                 self.used_account_ids.add(self.account_id)
