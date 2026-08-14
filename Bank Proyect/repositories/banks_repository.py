@@ -18,6 +18,7 @@ class BankRepository:
         for bank in self.banks:
             data["banks"].append(
                 {
+                    "bank id": bank.bank_id,
                     "name": bank.name,
                     "bank code": bank.bank_code
                 }
@@ -36,14 +37,15 @@ class BankRepository:
             for account_data in data["accounts"]:
                 account: Bank = Bank(
                     account_data["name"],
-                    account_data["bank code"]
+                    account_data["bank code"],
+                    account_data["bank id"]
                 )
                 self.banks.append(account)
 
         return self.banks
 
-    def find_bank_by_code(self, bank_code: str) -> Bank:
+    def find_bank_by_id(self, bank_id: str) -> Bank:
         for bank in self.banks:
-            if bank.bank_code == bank_code:
+            if bank.bank_id == bank_id:
                 return bank
-        raise ValueNotFoundException(bank_code)
+        raise ValueNotFoundException(bank_id)

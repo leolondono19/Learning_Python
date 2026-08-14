@@ -9,27 +9,23 @@ class BankAccount:
 
     def __init__(
             self,
-            owner: BankCustomer,
+            bank_customer: BankCustomer,
             type_account: TypeBankAccount,
             type_currency: TypeBankCurrency,
-            bank_code: str = "",
             balance: float = 0,
-            account_id: str | None = None
-            ) -> None:
+            bank_account_id: int | None = None
+        ) -> None:
 
-        self.__bank_code = bank_code
-        
-        if account_id is None:
-            self.account_id = self.__generate_account_id()
+        if bank_account_id is None:
+            self.bank_account_id = self.__generate_account_id()
         else:
-            self.account_id = account_id
-            BankAccount.used_account_ids.add(account_id)
+            self.bank_account_id = str(bank_account_id)
+            self.used_account_ids.add(self.bank_account_id)
 
-        
-        self.__balance = balance
-        self.owner: BankCustomer = owner
+        self.bank_customer: BankCustomer = bank_customer
         self.__type_account = type_account 
-        self.__type_currency = type_currency 
+        self.__type_currency = type_currency
+        self.__balance = balance
     
     @property
     def balance(self) -> float:
@@ -43,13 +39,8 @@ class BankAccount:
     def type_currency(self) -> TypeBankCurrency:
         return self.__type_currency
 
-    @property
-    def bank_code(self) -> str:
-         return self.__bank_code
-         
-    
     def __str__(self) -> str:
-        return f"{self.account_id} | {self.owner.username} | {self.__type_account.value} | {self.__balance} | {self.__type_currency.value}"
+        return f"{self.bank_account_id} | {self.bank_customer.bank.bank_id} | {self.__type_account.value} | {self.__balance} | {self.__type_currency.value}"
     
     def deposit(self, amount: float):
             if amount <= 0:
@@ -68,8 +59,8 @@ class BankAccount:
     
     def __generate_account_id(self) -> str:
         while True:
-            self.account_id: str = f"{self.bank_code}-ACC-{str(random.randint(1000, 1999))}"
+            self.bank_account_id: str = str(random.randint(1000, 1999))
 
-            if (self.account_id not in self.used_account_ids):
-                self.used_account_ids.add(self.account_id)
-                return self.account_id
+            if (self.bank_account_id not in self.used_account_ids):
+                self.used_account_ids.add(self.bank_account_id)
+                return self.bank_account_id

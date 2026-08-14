@@ -1,18 +1,21 @@
 from repositories.accounts_repository import AccountRepository
 from repositories.banks_repository import BankRepository
 from repositories.customer_repository import CustomerRepository
+from repositories.bank_customer_repository import BankCustomerRepository
 from services.authentication_service import AuthenticationService
 from enums.account_type import TypeBankAccount
 from enums.currency_type import TypeBankCurrency
+from models.customer import Customer
 from models.bank_customer import BankCustomer
 from models.bank_account import BankAccount
 from models.bank import Bank
 
 
 bank_repository: BankRepository = BankRepository()
-authentication_service: AuthenticationService = AuthenticationService()
 customer_repository: CustomerRepository = CustomerRepository()
-account_repository: AccountRepository = AccountRepository(customer_repository, bank_repository)
+authentication_service: AuthenticationService = AuthenticationService()
+bank_customer_repository: BankCustomerRepository = BankCustomerRepository(customer_repository, bank_repository)
+account_repository: AccountRepository = AccountRepository(bank_customer_repository)
 
 
 
@@ -40,11 +43,13 @@ account_repository.accounts.append(account2)
 account_repository.save_account()
 """
 
-bank: Bank = Bank("Banco Mercantil Santa Cruz", "BMSC")
+bank: Bank = Bank("Banco Mercantil Santa Cruz", "BMSC" )
 bank1: Bank = Bank("Banco Nacional de Bolivia", "BNB")
 
-customer3: BankCustomer = BankCustomer("garyflorero", "00000", "gary", "florero", 50, 123456, "garyflorero@gmail.com")
-account2: BankAccount = BankAccount(customer3, TypeBankAccount.SAVING_ACCOUNT, TypeBankCurrency.DOLARS, "BNB")
+customer: Customer = Customer("leolondono", "1234", "Leonee", "Londono", 22, 67314221, "leolondono@gmail.com")
+
+customer3: BankCustomer = BankCustomer(customer, bank)
+account2: BankAccount = BankAccount(customer3, TypeBankAccount.SAVING_ACCOUNT, TypeBankCurrency.DOLARS)
 
 
 bank_repository.banks.append(bank)

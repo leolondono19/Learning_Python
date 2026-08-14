@@ -4,22 +4,17 @@ from pathlib import Path
 from typing import Any
 from enums.account_type import TypeBankAccount
 from enums.currency_type import TypeBankCurrency
-from models.bank import Bank
 from models.bank_account import BankAccount
 from models.bank_customer import BankCustomer
-from repositories.banks_repository import BankRepository
-from repositories.customer_repository import CustomerRepository
+from repositories.bank_customer_repository import BankCustomerRepository
 
 class AccountRepository:
     
-    def __init__(self, customer_repository: CustomerRepository, bank_repository: BankRepository) -> None:
+    def __init__(self, bank_customer_repository: BankCustomerRepository) -> None:
         BASE_DIR = Path(__file__).resolve().parent.parent
         self.file = BASE_DIR / "data" / "accounts.json"
         self.accounts: list[BankAccount] = []
-        self.bank_repository: BankRepository = bank_repository
-        self.banks: list[Bank] = bank_repository.banks
-        self.customer_repository: CustomerRepository = customer_repository
-        self.customers: list[BankCustomer] = customer_repository.customers
+        self.bank_customer_repository: BankCustomerRepository = bank_customer_repository
         self.load_accounts()       
     
     def save_account(self):
@@ -28,8 +23,8 @@ class AccountRepository:
         for account in self.accounts:
             data["accounts"].append(
                 {
-                    "account id": account.account_id,
-                    "owner": account.owner.username,
+                    "bank account id": account.bank_account_id,
+                    "bank customer id": account.bank_customer.bank_customer_id,
                     "type account": account.type_account.value,
                     "type currency": account.type_currency.value,
                     "balance": account.balance
@@ -47,22 +42,18 @@ class AccountRepository:
             data = json.load(account_file)
 
             for account_data in data["accounts"]:
-                owner_username: str = account_data["owner"]
-                account_id: str = account_data["account id"]
+                bank_customer_id: str = account_data["bank customer id"]
 
-                owner: BankCustomer = self.customer_repository.find_customer_by_username(owner_username)
+                bank_customer: BankCustomer = self.bank_customer_repository.find_bank_customer_by_id(bank_customer_id)
+
                 account: BankAccount = BankAccount(
-                    owner,
+                    bank_customer,
                     TypeBankAccount(account_data["type account"]),
                     TypeBankCurrency(account_data["type currency"]),
                     account_data["balance"],
-                    account_id
+                    account_data["bank account id"]
                 )
-                id_parts: list[str] = account_id.split("-")
-                bank_code: str = id_parts[0]
-                bank: Bank = self.bank_repository.find_bank_by_code(bank_code)
-                owner.banks.append(bank)
-                bank.customers.append(owner)
                 self.accounts.append(account)
-                owner.accounts.append(account)
+                bank_customer.bank_accounts.append(account)
+
         return self.accounts

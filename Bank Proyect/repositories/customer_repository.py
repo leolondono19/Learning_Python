@@ -2,14 +2,14 @@ import os
 import json
 from typing import Any
 from pathlib import Path
-from models.bank_customer import BankCustomer
+from models.customer import Customer
 from exceptions.exceptions import ValueNotFoundException
 
 class CustomerRepository:
     def __init__(self) -> None:
         BASE_DIR = Path(__file__).resolve().parent.parent
         self.file = BASE_DIR / "data" / "customers.json"
-        self.customers: list[BankCustomer] = []
+        self.customers: list[Customer] = []
         self.load_customers()
 
 
@@ -26,14 +26,14 @@ class CustomerRepository:
                     "age": customer.age,
                     "phone": customer.phone,
                     "mail": customer.mail,
-                    "password": customer.password,
+                    "password": customer.password
                 }
             )
 
         with open(self.file, "w") as account_file:
             json.dump(data, account_file, indent=4)
 
-    def load_customers(self) -> list[BankCustomer]:
+    def load_customers(self) -> list[Customer]:
         if (not os.path.exists(self.file)):
             return []
 
@@ -41,7 +41,7 @@ class CustomerRepository:
             data = json.load(account_file)
 
             for customer_data in data["customers"]:
-                customer: BankCustomer = BankCustomer(
+                customer: Customer = Customer(
                     customer_data["username"],
                     customer_data["password"],
                     customer_data["first_name"],
@@ -55,8 +55,8 @@ class CustomerRepository:
                 
         return self.customers
 
-    def find_customer_by_username(self, username: str) -> BankCustomer:
+    def find_customer_by_id(self, customer_id: str) -> Customer:
             for customer in self.customers:
-                if customer.username == username:
+                if customer.customer_id == customer_id:
                     return customer
-            raise ValueNotFoundException(username)
+            raise ValueNotFoundException(customer_id)

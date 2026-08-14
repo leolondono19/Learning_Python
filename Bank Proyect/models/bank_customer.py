@@ -1,48 +1,34 @@
+from models.bank_account import BankAccount
+from models.customer import Customer
+from models.bank import Bank
 import random
-from models.user import User
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from models.bank_account import BankAccount
-    from models.bank import Bank
 
-class BankCustomer(User):
-    used_customer_ids: set[str] = set()
+class BankCustomer:
+    used_bank_customer_ids: set[str] = set()
 
     def __init__(
             self,
-            username: str,
-            password: str,
-            first_name: str,
-            last_name: str,
-            age: int,
-            phone: int,
-            mail: str,
-            customer_id: str | None = None
-    ) -> None:
-        super().__init__(
-            username,
-            password,
-            first_name,
-            last_name,
-            age,
-            phone,
-            mail  
-        )
-        self.accounts: list["BankAccount"] = []
-        self.banks: list["Bank"] = []
-        if customer_id is None:
-                    self.customer_id = self.__generate_customer_id()
+            customer: Customer,
+            bank: Bank,
+            bank_customer_id: int | None = None
+        ) -> None:
+        
+        if bank_customer_id is None:
+            self.bank_customer_id = self.__generate_bank_customer_id()
         else:
-            self.customer_id = customer_id
-            BankAccount.used_account_ids.add(customer_id)
+            self.bank_customer_id = str(bank_customer_id)
+            self.used_bank_customer_ids.add(self.bank_customer_id)
+        self.customer = customer
+        self.bank = bank
+        self.bank_accounts: list[BankAccount] = []
 
-    def __str__(self) -> str:
-        return f"{self.username} | {self.first_name} | {self.last_name} | {self.age} | {self.phone} | {self.mail}"
-
-    def __generate_customer_id(self) -> str:
+    def __generate_bank_customer_id(self) -> str:
         while True:
             self.customer_id: str = str(random.randint(1000, 1999))
 
-            if (self.customer_id not in self.used_customer_ids):
-                self.used_customer_ids.add(self.customer_id)
+            if (self.customer_id not in self.used_bank_customer_ids):
+                self.used_bank_customer_ids.add(self.customer_id)
                 return f"{self.customer_id}" 
+
+
+        
